@@ -3,6 +3,7 @@ package com.example.horse_human_classify
 import android.content.Context
 import android.graphics.Bitmap
 import org.tensorflow.lite.Interpreter
+//import org.tensorflow.lite.nnapi.NnApiDelegate
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.IOException
@@ -25,10 +26,20 @@ class ImageClassifier(private val context: Context) {
         private const val MODEL_FILE = "model.tflite"
         private const val LABEL_FILE = "labels.txt"
     }
-
+    /*
     private val interpreter: Interpreter by lazy {
         Interpreter(loadModelFile(), Interpreter.Options())
     }
+    */
+    private val interpreter: Interpreter by lazy {
+        val options = Interpreter.Options()
+        //val delegate = NnApiDelegate()
+        //options.addDelegate(delegate)
+        options.setNumThreads(4) // Set the number of threads to be used for inference
+        //options.setUseNNAPI(true) // Enable NNAPI acceleration, gives error if not available
+        Interpreter(loadModelFile(), options)
+    }
+
     private val labelList: List<String> by lazy {
         loadLabels()
     }

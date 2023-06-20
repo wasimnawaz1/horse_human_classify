@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val pickImage =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                resultTextView.text = "" // Clear classification result text
+                "To classify, click the image".also { resultTextView.text = it } // Clear classification result text
                 val source = ImageDecoder.createSource(contentResolver, uri)
                 selectedImage = ImageDecoder.decodeBitmap(source)
                 //ImageDecoder.decodeBitmap(source)
